@@ -10,14 +10,14 @@ curl -X POST -d '<jenkins><install plugin="startup-trigger-plugin@2.9.3"  /></je
 curl -X POST -d '<jenkins><install plugin="powershell@1.3"  /></jenkins>' -H "Content-Type:text/xml" -u $1:$2 -H $CRUMB $JENKINS/pluginManager/installNecessaryPlugins
 
 ## Add the nodes.
-sudo md ~jenkins/nodes/hgs
+sudo mkdir ~jenkins/nodes/hgs
 sudo cp ./nodes/hgs.xml ~jenkins/nodes/hgs/config.xml
-sudo md ~jenkins/nodes/ghost
+sudo mkdir ~jenkins/nodes/ghost
 sudo cp ./nodes/ghost.xml ~jenkins/nodes/ghost/config.xml
 sudo chown -R jenkins ~jenkins/nodes
 
 ## Add the job.
-sudo md ~jenkins/jobs/IsHostGuarded
+sudo mkdir ~jenkins/jobs/IsHostGuarded
 sudo cp ./jobs/IsHostGuarded.xml ~jenkins/jobs/IsHostGuarded/config.xml
 sudo chown -R jenkins ~jenkins/jobs
 
