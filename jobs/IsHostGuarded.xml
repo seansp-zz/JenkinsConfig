@@ -1,6 +1,7 @@
-<?xml version="1.1" encoding="UTF-8"?><project>
+<?xml version='1.1' encoding='UTF-8'?>
+<project>
   <actions/>
-  <description/>
+  <description></description>
   <keepDependencies>false</keepDependencies>
   <properties/>
   <scm class="hudson.scm.NullSCM"/>
@@ -9,22 +10,27 @@
   <disabled>false</disabled>
   <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
   <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
-  <triggers/>
+  <triggers>
+    <org.jvnet.hudson.plugins.triggers.startup.HudsonStartupTrigger plugin="startup-trigger-plugin@2.9.3">
+      <spec></spec>
+      <label>ghost</label>
+      <quietPeriod>0</quietPeriod>
+      <runOnChoice>ON_CONNECT</runOnChoice>
+    </org.jvnet.hudson.plugins.triggers.startup.HudsonStartupTrigger>
+  </triggers>
   <concurrentBuild>false</concurrentBuild>
   <builders>
     <hudson.plugins.powershell.PowerShell plugin="powershell@1.3">
-      <command>
-
-##DESIGN: If we are running 32 bit powershell, we need to respawn with the 64 bit version.
+      <command>##DESIGN: If we are running 32 bit powershell, we need to respawn with the 64 bit version.
 ##       Alternatively, I could have used a 64 bit Java installer but realize ... this snippet
 ##       from the internets allows for both options which is nice.
 
-if ($env:PROCESSOR_ARCHITEW6432 -eq "AMD64") {
-    write-warning "Relaunching as AMD"
+if ($env:PROCESSOR_ARCHITEW6432 -eq &quot;AMD64&quot;) {
+    write-warning &quot;Relaunching as AMD&quot;
     if ($myInvocation.Line) {
-        &amp;"$env:WINDIR\sysnative\windowspowershell\v1.0\powershell.exe" -NonInteractive -NoProfile $myInvocation.Line
+        &amp;&quot;$env:WINDIR\sysnative\windowspowershell\v1.0\powershell.exe&quot; -NonInteractive -NoProfile $myInvocation.Line
     }else{
-        &amp;"$env:WINDIR\sysnative\windowspowershell\v1.0\powershell.exe" -NonInteractive -NoProfile -file "$($myInvocation.InvocationName)" $args
+        &amp;&quot;$env:WINDIR\sysnative\windowspowershell\v1.0\powershell.exe&quot; -NonInteractive -NoProfile -file &quot;$($myInvocation.InvocationName)&quot; $args
     }
 exit $lastexitcode
 }
@@ -39,38 +45,39 @@ Start-LSGNotes -path results.log
 if( -not $? )
 {
     $issue = $Error[0].Exception.Message
-    Write-LSGNote "ERROR::$issue"
+    Write-LSGNote &quot;ERROR::$issue&quot;
     $failed=$true
 }
 $ClientConfiguration = Get-HgsClientConfiguration
 if( -not $? )
 {
     $issue = $Error[0].Exception.Message
-    Write-LSGNote "ERROR::$issue"
+    Write-LSGNote &quot;ERROR::$issue&quot;
     $failed=$true
 }
 else
 {
   $ClientConfiguration
-  $ClientConfiguration | ConvertTo-JSON -Depth 1 | Set-Content -path "ClientConfiguration.json"
-  Write-LSGNote "ClientConfiguration stored as ClientConfiguration.json"
+  $ClientConfiguration | ConvertTo-JSON -Depth 1 | Set-Content -path &quot;ClientConfiguration.json&quot;
+  Write-LSGNote &quot;ClientConfiguration stored as ClientConfiguration.json&quot;
   if( $ClientConfiguration.IsHostGuarded)
   {
-    Write-LSGNote "Host is guarded. PASS"
+    Write-LSGNote &quot;Host is guarded. PASS&quot;
   }
   else
   {
-    Write-LSGNote "Host is NOT guarded. FAIL."
+    Write-LSGNote &quot;Host is NOT guarded. FAIL.&quot;
     $failed=$true
   }
 }
 if( $failed )
 {
   exit 1
-}
-</command>
+}</command>
     </hudson.plugins.powershell.PowerShell>
   </builders>
   <publishers/>
-  <buildWrappers/>
+  <buildWrappers>
+    <hudson.plugins.timestamper.TimestamperBuildWrapper plugin="timestamper@1.8.10"/>
+  </buildWrappers>
 </project>

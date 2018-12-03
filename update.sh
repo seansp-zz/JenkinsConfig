@@ -7,7 +7,14 @@ JENKINS=$(echo "http://localhost:8080")
 ## Install the plugins
 
 curl -X POST -d '<jenkins><install plugin="startup-trigger-plugin@2.9.3"  /></jenkins>' -H "Content-Type:text/xml" -u $1:$2 -H $CRUMB $JENKINS/pluginManager/installNecessaryPlugins
-curl -X POST -d '<jenkins><install plugin="powershell@1.3"  /></jenkins>' -H "Content-Type:text/xml" -u $1:$2 -H $CRUMB $JENKINS/pluginManager/installNecessaryPlugins
+
+pushd ~jenkins/plugins
+sudo wget http://updates.jenkins-ci.org/download/plugins/powershell/1.3/powershell.hpi
+popd
+ 
+
+
+
 
 ## Add the nodes.
 sudo mkdir ~jenkins/nodes/hgs
