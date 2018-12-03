@@ -29,8 +29,8 @@ curl -X POST 'http://localhost:8080/credentials/store/system/domain/_/createCred
   "credentials": {
     "scope":"GLOBAL",
     "id": "mstest",
-    "username": "$1",
-    "password": "$2",
+    "username": "'$1'",
+    "password": "'$2'",
     "description": "Credential for connecting to machines using SSH.",
     "$class": "com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl"
   }
